@@ -1,0 +1,104 @@
+[False, False, False, False, False, False, False, False]
+[True, True, False, False, False, False, False, False]
+[ERROR] [WallTime: 1537725479.825155] bad callback: <function callback at 0x7f7e70422488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[ERROR] [WallTime: 1537725490.232845] bad callback: <function callback at 0x7f7e70422488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[ERROR] [WallTime: 1537725495.233145] bad callback: <function callback at 0x7f7e70422488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+^Croot@Wall-E:~# rosrun usb_relay ros_relay_bridge.py
+[False, False, False, False, False, False, False, False]
+[ERROR] [WallTime: 1537728258.870103] bad callback: <function callback at 0x7f6eb8545488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[ERROR] [WallTime: 1537728258.969486] bad callback: <function callback at 0x7f6eb8545488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[True, True, False, False, False, False, False, False]
+[ERROR] [WallTime: 1537728271.957800] bad callback: <function callback at 0x7f6eb8545488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[True, True, False, False, False, False, False, False]
+[ERROR] [WallTime: 1537728286.223177] bad callback: <function callback at 0x7f6eb8545488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[ERROR] [WallTime: 1537728299.858237] bad callback: <function callback at 0x7f6eb8545488>
+Traceback (most recent call last):
+  File "/opt/ros/indigo/lib/python2.7/dist-packages/rospy/topics.py", line 720, in _invoke_callback
+    cb(msg)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/ros_relay_bridge.py", line 15, in callback
+    print relay.state(0)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 96, in state
+    switch_statuses = self.get_switch_statuses_from_report(report)
+  File "/home/wyatt/ros_ws/src/usb_relay/src/relay.py", line 52, in get_switch_statuses_from_report
+    switch_statuses = report[7]
+IndexError: list index out of range
+
+[False, False, False, False, False, False, False, False]
+
