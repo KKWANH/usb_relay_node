@@ -17,6 +17,8 @@ def callback(data):
 
 def listener():
     rospy.init_node('relay', anonymous=True)
+    for key, value in relays.devices.items():
+        rospy.Service(key, Int32)
     rospy.Subscriber("relay_state", Int32, callback)
     rospy.spin()
 
