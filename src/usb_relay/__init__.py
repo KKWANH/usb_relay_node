@@ -5,14 +5,14 @@ from collections import defaultdict
 
 try:
 	# noinspection PyUnresolvedReferences
-	from typing import Dict
+	from typing import Dict, List
 except ImportError:
 	pass
 
 
 class Relays:
 	"""
-	Gets a list of relay modules by serial number. :code:`devices` is a dictionary of serial numbers to :code:`Relay`s.
+	Gets a list of relay modules by name. :code:`devices` is a dictionary of name to :code:`Relay`s.
 	"""
 
 	def __init__(self, vendor=0x16c0, product=0x05df):
@@ -21,16 +21,15 @@ class Relays:
 		:param vendor: the USB vendor ID of the relay modules.
 		:param product: the USB product ID of the relay modules.
 		"""
-		self.devices = defaultdict(list)  # type: Dict[str, list]
+		self.devices = defaultdict(list)  # type: Dict[str, List[Relay]]
 		for device in hid.enumerate(vendor, product):
 			dev = hid.device()
 			dev.open_path(device["path"])
 			dev.set_nonblocking(1)
 			relay_count = int(device['product_string'][8])
-			serial = bytes(bytearray(dev.get_feature_report(1, 5))).split(b'\x00')
-			serial = serial[0] if len(serial) > 0 else ''
-			print(serial)
-			self.devices[serial].append(Relay(dev, relay_count))
+			name = bytes(bytearray(dev.get_feature_report(1, 5))).split(b'\x00')
+			name = name[0] if len(name) > 0 else ''
+			self.devices[name].append(Relay(dev, relay_count))
 
 	def deduplicated(self):  # type: () -> Dict[str, Relay]
 		devices = {}
@@ -43,7 +42,7 @@ class Relays:
 class Relay:
 	"""
 	See https://github.com/jaketeater/Very-Simple-USB-Relay for the basic operations (turning on and off).
-	https://github.com/darrylb123/usbrelay was the inspiration for serial numbers.
+	https://github.com/darrylb123/usbrelay was the inspiration for names.
 	"""
 
 	def __init__(self, device, count):  # type: (hid.device, int) -> Relay
@@ -56,20 +55,19 @@ class Relay:
 		self.d = device
 		self.relay_count = count
 
-	def set_serial(self, serial):  # type: (str) -> None
+	def set_name(self, name):  # type: (str) -> None
 		"""
-		Sets the serial number of the relay. The serial number must be no more than 5 bytes. Note that it does not have
-		to be a "number", it can be any string of bytes.
+		Sets the name of the relay. The name must be no more than 5 bytes. It may be any 5 bytes, including unicode.
 
-		:param serial: The serial number to set
-		:raises ValueError: if the serial number is too long
+		:param name: The name number to set
+		:raises ValueError: if the name number is too long
 		"""
-		if not (isinstance(serial, bytes) or isinstance(serial, bytearray)):
-			serial = serial.encode('utf-8')
-		if len(serial) > 5:
-			raise ValueError("Serial numbers must be at most 5 characters")
+		if not (isinstance(name, bytes) or isinstance(name, bytearray)):
+			name = name.encode('utf-8')
+		if len(name) > 5:
+			raise ValueError("name numbers must be at most 5 characters")
 		message = [0xFA]
-		message += [c for c in serial.ljust(5, b'\x00')]
+		message += [c for c in name.ljust(5, b'\x00')]
 		message.append(0x00)
 		self.d.send_feature_report(message)
 
@@ -97,9 +95,14 @@ class Relay:
 				message = [0xFD, relay]
 		self.d.send_feature_report(message)
 
-	def get_serial(self):  # type: () -> bytes
-		serial = bytes(bytearray(self.d.get_feature_report(1, 5))).split(b'\x00')
-		return serial[0] if len(serial) > 0 else ''
+	def get_name(self):  # type: () -> bytes
+		"""
+		Gets the current name of the relay.
+
+		:return: The name of the relay
+		"""
+		name = bytes(bytearray(self.d.get_feature_report(1, 5))).split(b'\x00')
+		return name[0] if len(name) > 0 else ''
 
 	def get_states(self):  # type: () -> [bool]
 		"""

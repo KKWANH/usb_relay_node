@@ -6,7 +6,14 @@ from __future__ import unicode_literals
 from sys import stderr
 from threading import Thread
 from sys import version_info
-from usb_relay import Relay
+if __name__ == '__main__':
+	if __package__ is None:
+		import sys
+		from os import path
+		sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+		from usb_relay import Relay
+	else:
+		from . import Relay
 import time
 import hid
 import atexit
@@ -140,7 +147,7 @@ def prompt(message=''):  # type: (str or unicode) -> str or bytes
 			else:
 				response = input().encode('utf-8')
 			if len(response) > 5:
-				print(AnsiEscapes.RED + "✖" + AnsiEscapes.END + " Serial numbers must be at most 5 bytes")
+				print(AnsiEscapes.RED + "✖" + AnsiEscapes.END + " Names must be at most 5 bytes")
 			else:
 				return response
 	except EOFError:
@@ -156,15 +163,15 @@ if __name__ == '__main__':
 		while a.is_alive():
 			p.next()
 			time.sleep(1 / 15)
-		serial = a.device.get_serial()
+		name = a.device.get_name()
 		relay_count = a.device.relay_count
 		p.succeed("Found a module named \"{}\" with {} relay{}".format(
-			serial.decode('utf-8', 'replace'),
+			name.decode('utf-8', 'replace'),
 			relay_count,
 			'' if relay_count == 1 else 's'
 		))
-		new_serial = prompt(message="Enter the new serial number")
-		a.device.set_serial(new_serial)
-		print(AnsiEscapes.GREEN + "✔" + AnsiEscapes.END + " successfully set the serial number!")
+		new_name = prompt(message="Enter the new name")
+		a.device.set_name(new_name)
+		print(AnsiEscapes.GREEN + "✔" + AnsiEscapes.END + " successfully set the name!")
 	except KeyboardInterrupt:
 		pass
