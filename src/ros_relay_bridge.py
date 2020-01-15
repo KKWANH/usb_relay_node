@@ -10,7 +10,7 @@ from usb_relay import Relays
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import Dict, List
+    from typing import Dict
 except ImportError:
     pass
 
