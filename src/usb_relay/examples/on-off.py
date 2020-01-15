@@ -20,7 +20,7 @@ relays = Relays()
 
 for key, value in relays.devices.items():
 	for relay in value:
-		print("Relay with name \"{}\" has {} relays".format(key.decode('utf-8', 'replace'), relay.relay_count))
+		print("Relay with name \"{}\" has {} relays".format(key, relay.relay_count))
 		for i in range(1, relay.relay_count+1):
 			relay.set(True, i)
 			sleep(0.5)

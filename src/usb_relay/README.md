@@ -28,7 +28,7 @@ Now, either restart your computer or unplug and plug back in every
 module.
 
 ### Changing the name of a module
-Run the Python file [set_serial.py]. Then, plug in the module if it is
+Run the Python script [set_serial.py]. Then, plug in the module if it is
 currently unplugged, or unplug it and plug it back in. Then, enter the
 new name.
 

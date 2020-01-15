@@ -1,0 +1,4 @@
+usb_relay_wsn/RelayState[] states
+---
+bool success
+string message

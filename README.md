@@ -1,30 +1,50 @@
-# USB_HID_ROS_Bridge
-A simple rospy subsciber to turn a conencted USB relay on and off
-Based on https://github.com/jaketeater/Very-Simple-USB-Relay
+# usb_relay_wsn
+A ROS node to control the states of relays
 
-Tested with ROS Indigo and Kinetic 
+## Setup
 
-uses libusb libudev-dev ... (see)
+Follow the
+[Getting Started guide](src/usb_relay/README.md#getting-started) of the
+usb_relay module, as well as the next step, [Changing the name of a
+module][change-name].
 
-how to run relay node:
-did the following--but not sure if this was necessary:
+## Usage
 
-sudo chown root:root ros_relay_bridge.py
-sudo chmod u+s ros_relay_bridge.py
+To start the node from the command line, run `rosrun usb_relay_wsn
+ros_relay_bridge.py`. This will listen for service calls for each relay,
+using each relay's name as the topic. If multiple relays have the same
+name, they will be controlled together.
 
-open a terminal
-type:  sudo -s
-then: rosrun usb_relay ros_relay_bridge.py
+It is recommended to namespace this node. To do this from the command
+line, run `ROS_NAMESPACE=relays rosrun usb_relay_wsn
+ros_relay_bridge.py`. This will prefix each relay with `relays`, so a
+relay with a name of `serno` will be controlled from `/relays/serno`.
 
-should see rostopic: /relay_state
+This node will listen for service calls using the
+[SetRelay](srv/SetRelay.srv) service type. It will publish relay states
+with the [RelayStates](msg/RelayStates.msg) message type. Both the
+service and topic use the name of the relay. **To change the name of a
+relay, [follow the instructions to change the name of a
+module][change-name]**.
 
-can then publish to relay, e.g.:
-rostopic pub /relay_state std_msgs/Int32 01
+The following examples are shown without a namespace:
 
-rostopic pub /relay_state std_msgs/Int32 00
+### `rostopic` from the command line
+```bash
+# Shows the state of the relays with a name of 'serno'
+rostopic echo /serno
+```
 
-codes:
-00  left num is relay choice: 0=all, 1=relay1, 2= relay2
-    right num: 1 is enable, 0 is disable
-    
-rostopic pub /relay_state std_msgs/Int32 00    turns off both relays
+### `rosservice` from the command line
+Used to change the state of relays.
+
+```bash
+# Turning relay 1 on with a name of 'serno'
+rosservice call /serno '[{id: 1, state: true}]'
+# Turning all relays on with a name of 'serno'
+rosservice call /serno '[{id: 0, state: true}]'
+# Turning relay 1 on and relay 2 off with a name of 'serno'
+rosservice call /serno '[{id: 1, state: true}, {id: 2, state: false}]'
+```
+
+[change-name]: src/usb_relay/README.md#changing-the-name-of-a-module
