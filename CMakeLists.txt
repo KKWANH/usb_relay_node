@@ -1,42 +1,30 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(usb_relay_wsn)
 
-find_package(catkin_simple REQUIRED)
+find_package(catkin REQUIRED COMPONENTS roslint message_generation std_msgs)
 
-#uncomment next line to use OpenCV library
-#find_package(OpenCV REQUIRED)
+add_message_files(FILES
+  RelayState.msg
+  RelayStates.msg
+)
 
-#uncomment the next 2 lines to use the point-cloud library
-#find_package(PCL 1.7 REQUIRED)
-#include_directories(${PCL_INCLUDE_DIRS})
+add_service_files(FILES
+  SetRelay.srv
+)
 
+catkin_python_setup()
 
-#uncomment the following 4 lines to use the Eigen library
-#find_package(cmake_modules REQUIRED)
-#find_package(Eigen3 REQUIRED)
-#include_directories(${EIGEN3_INCLUDE_DIR})
-#add_definitions(${EIGEN_DEFINITIONS})
+generate_messages(DEPENDENCIES std_msgs)
 
-catkin_simple()
+catkin_package(
+  CATKIN_DEPENDS message_runtime std_msgs
+)
 
-# example boost usage
-# find_package(Boost REQUIRED COMPONENTS system thread)
+catkin_install_python(PROGRAMS
+  src/ros_relay_bridge.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
-# C++0x support - not quite the same as final C++11!
-# use carefully;  can interfere with point-cloud library
-# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-
-# Libraries: uncomment the following and edit arguments to create a new library
-# cs_add_library(my_lib src/my_lib.cpp)   
-
-# Executables: uncomment the following and edit arguments to compile new nodes
-# may add more of these lines for more nodes from the same package
-# cs_add_executable(example src/example.cpp)
-
-#the following is required, if desire to link a node in this package with a library created in this same package
-# edit the arguments to reference the named node and named library within this package
-# target_link_library(example my_lib)
-
-cs_install()
-cs_export()
-    
+# Check package for pep8 style, add a test to fail on violations.
+roslint_python()
+roslint_add_test()
