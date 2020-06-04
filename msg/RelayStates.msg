@@ -1,1 +1,1 @@
-RelayState[] states
+bool[] states
