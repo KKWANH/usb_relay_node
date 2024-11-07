@@ -1,0 +1,4 @@
+<launch>
+  <node name="usb_relay_node" pkg="usb_relay_node" type="ros_relay_cpython_bridge.py" output="screen">
+  </node>
+</launch>

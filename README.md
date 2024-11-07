@@ -1,50 +1,45 @@
-# usb_relay_wsn
-A ROS node to control the states of relays
+# USB Relay ROS Node
 
-## Setup
+This ROS node controls a USB relay device, specifically handling left and right signals with blinking functionality. It uses the `usb_relay_device.so` library to control relay channels based on signals received from other ROS nodes.
 
-Follow the
-[Getting Started guide](src/usb_relay/README.md#getting-started) of the
-usb_relay module, as well as the next step, [Changing the name of a
-module][change-name].
+## Features
+
+1. **Left and Right Signal Control**:
+   - Subscribes to `left` and `right` topics to control the respective relay channels.
+   - If both signals are active, the "ALL" channel is activated.
+
+2. **Blinking Functionality**:
+   - Each signal blinks with a configurable duration, creating a visual indicator.
+
+3. **Automatic Shutdown**:
+   - When the node is terminated, all relay channels are turned off.
+
+## Requirements
+
+- ROS installed and set up.
+- `usb_relay_device.so` library placed in an accessible directory. For detailed setup, refer to [USB Relay HID](https://github.com/pavel-a/usb-relay-hid/tree/master).
 
 ## Usage
 
-To start the node from the command line, run `rosrun usb_relay_wsn
-ros_relay_bridge.py`. This will listen for service calls for each relay,
-using each relay's name as the topic. If multiple relays have the same
-name, they will be controlled together.
-
-It is recommended to namespace this node. To do this from the command
-line, run `ROS_NAMESPACE=relays rosrun usb_relay_wsn
-ros_relay_bridge.py`. This will prefix each relay with `relays`, so a
-relay with a name of `serno` will be controlled from `/relays/serno`.
-
-This node will listen for service calls using the
-[SetRelay](srv/SetRelay.srv) service type. It will publish relay states
-with the [RelayStates](msg/RelayStates.msg) message type. Both the
-service and topic use the name of the relay. **To change the name of a
-relay, [follow the instructions to change the name of a
-module][change-name]**.
-
-The following examples are shown without a namespace:
-
-### `rostopic` from the command line
+1. Run the Node:
 ```bash
-# Shows the state of the relays with a name of 'serno'
-rostopic echo /serno
+rosrun <your_package_name> usb_relay_node.py
 ```
 
-### `rosservice` from the command line
-Used to change the state of relays.
-
+2. Control Signals:
+- Publish to the left and right topics with std_msgs/Bool messages to turn on/off the respective signals.
 ```bash
-# Turning relay 1 on with a name of 'serno'
-rosservice call /serno '[{id: 1, state: true}]'
-# Turning all relays on with a name of 'serno'
-rosservice call /serno '[{id: 0, state: true}]'
-# Turning relay 1 on and relay 2 off with a name of 'serno'
-rosservice call /serno '[{id: 1, state: true}, {id: 2, state: false}]'
+rostopic pub /left std_msgs/Bool "data: true"   # Turn left signal on
+rostopic pub /right std_msgs/Bool "data: true"  # Turn right signal on
 ```
 
-[change-name]: src/usb_relay/README.md#changing-the-name-of-a-module
+## Code Explanation
+### Main Functionality
+The `USBRelayNode` class handles device connection, listens for left and right signals, and manages relay control with blinking functionality.
+
+### Core Methods
+- `monitor_device_connection`: Continuously monitors the connection to the USB relay device.
+- `toggle_relay_channel`: Turns a relay channel on or off using `usb_relay_device_open_one_relay_channel` and `usb_relay_device_close_one_relay_channel` from `usb_relay_device.so`.
+- `handle_blinking`: Checks for active signals (left, right, or both) and blinks the relay channels with the set blink_duration.
+- `shutdown`: Ensures all relay channels are turned off and cleans up the device handle before exit.
+
